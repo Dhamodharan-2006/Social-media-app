@@ -2,13 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv');        // ✅ import first
+dotenv.config();                          // ✅ load env first
+
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const { initSocket } = require('./socket');
-
-dotenv.config();
 
 const app = express();
 const server = http.createServer(app);
@@ -49,6 +49,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'Server Error' });
 });
 
+// ✅ Only ONE mongoose.connect with correct variable name
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB Connected');
